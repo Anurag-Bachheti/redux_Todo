@@ -36,3 +36,30 @@
     transform: rotate(360deg);
   }
 }
+
+.form{
+  width: 1000px;
+  margin: auto;
+  display: flex;
+  gap: 1%
+}
+
+.form input{
+  flex-basis: 70%;
+  height: 30px;
+}
+.form button{
+  flex-basis: 10%;
+  height: 37px;
+}
+
+.check-btn{
+  background-color: rgb(95, 199, 95);
+}
+.delete-btn{
+  background-color: rgb(233, 67, 67);
+}
+.clearAll{
+  background-color: rgb(161, 25, 25);
+  color: aliceblue;
+}
