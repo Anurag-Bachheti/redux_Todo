@@ -63,3 +63,10 @@
   background-color: rgb(161, 25, 25);
   color: aliceblue;
 }
+.checkList{
+  text-decoration: line-through;
+  color: gray
+}
+.notCheckList{
+  text-decoration: none;
+}

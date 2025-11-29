@@ -1,16 +1,18 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
-const TodoForm = ({onAddTodo}) => {
+const TodoForm = ({ onAddTodo }) => {
     const [inputValue, setInputValue] = useState({});
 
+    //handle input change
     const handleInputChange = (value) => {
-        setInputValue({id:value, content:value, checked:false});
+        setInputValue({ id: value, content: value, checked: false });
     }
 
+    // handle form submit
     const handleFormSubmit = (event) => {
         event.preventDefault();
         onAddTodo(inputValue);
-        setInputValue({id:"", content:"", checked:false});
+        setInputValue({ id: "", content: "", checked: false });
     }
 
     return (

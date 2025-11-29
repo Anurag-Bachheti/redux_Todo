@@ -2,9 +2,12 @@ import { useState } from 'react';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 
-const ToDo = () => {
-  const [task, setTask] = useState([]);
+import { getLocalStorageTodoData, setLocalStorageTodoData } from "./TodoLocalStorage";
 
+const Todo = () => {
+  const [task, setTask] = useState(() => getLocalStorageTodoData());
+
+  // handle form submit
   const handleFormSubmit = (inputValue) => {
     const { id, content, checked } = inputValue;
     if (!content) return; //dont add empty
@@ -15,24 +18,37 @@ const ToDo = () => {
     setTask((prevTask) => [...prevTask, { id, content, checked }])
   }
 
+  //todo add to localstorage
+  setLocalStorageTodoData(task);
+
+  //handle delete todo
   const handleDeleteTodo = (value) => {
     const updatedTask = task.filter((currTask) => currTask.content !== value);
     setTask(updatedTask)
   }
 
+  //handle clear all todos
   const handleClearAllTodos = () => {
     setTask([]);
   }
 
-  const handleCheckedTodo =(task)=> {
-    
+  //handle checked todo
+  const handleCheckedTodo = (content) => {
+    const updatedTask = task.map((currTask) => {
+      if (currTask.content === content) {
+        return { ...currTask, checked: !currTask.checked };
+      } else {
+        return currTask;
+      }
+    })
+    setTask(updatedTask);
   }
 
   return (
     <>
       <div className='container'>
         <header>
-          <h1>ToDo List</h1>
+          <h1>Todo List</h1>
         </header>
       </div>
 
@@ -46,7 +62,7 @@ const ToDo = () => {
                 <TodoList
                   key={currTask.id}
                   data={currTask.content}
-                  checked = {currTask.checked}
+                  checked={currTask.checked}
                   onHandleDeleteTodo={handleDeleteTodo}
                   onHandleCheckedTodo={handleCheckedTodo}
                 />
@@ -64,4 +80,4 @@ const ToDo = () => {
   )
 }
 
-export default ToDo;
+export default Todo;
