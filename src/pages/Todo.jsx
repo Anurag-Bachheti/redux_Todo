@@ -1,48 +1,63 @@
-import { useState } from 'react';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
-
-import { getLocalStorageTodoData, setLocalStorageTodoData } from "./TodoLocalStorage";
+import { useSelector, useDispatch } from 'react-redux';
 
 const Todo = () => {
-  const [task, setTask] = useState(() => getLocalStorageTodoData());
+
+  const tasks = useSelector((state) => state.task);
+  const dispatch = useDispatch();
 
   // handle form submit
   const handleFormSubmit = (inputValue) => {
-    const { id, content, checked } = inputValue;
+    const { content } = inputValue;
     if (!content) return; //dont add empty
-    const ifTodoMatched = task.find(
-      (currTask) => currTask.content === content
+
+    const alreadyExists = tasks.some(
+      (t) => t.toLowerCase() === content.toLowerCase()
     );
-    if (ifTodoMatched) return;
-    setTask((prevTask) => [...prevTask, { id, content, checked }])
+
+    if(alreadyExists){
+      alert("Task already exists!");
+      return;
+    }
+
+    dispatch({
+      type: "task/add",
+      payload: content
+    })
   }
 
-  //todo add to localstorage
-  setLocalStorageTodoData(task);
-
-  //handle delete todo
   const handleDeleteTodo = (value) => {
-    const updatedTask = task.filter((currTask) => currTask.content !== value);
-    setTask(updatedTask)
+    dispatch({
+      type: "task/delete",
+      payload: value
+    })
+  }
+
+  //handle checked todo
+  const handleCheckedTodo = (index) => {
+    const item = tasks[index];
+
+    const isChecked = item.includes("✓")
+    const cleaned = item.replace("✓", "")
+
+    dispatch({
+      type: "task/delete",
+      payload: index
+    })
+
+    dispatch({
+      type: "task/add",
+      payload: isChecked ? cleaned : cleaned + " ✓"
+    })
   }
 
   //handle clear all todos
   const handleClearAllTodos = () => {
-    setTask([]);
-  }
-
-  //handle checked todo
-  const handleCheckedTodo = (content) => {
-    const updatedTask = task.map((currTask) => {
-      if (currTask.content === content) {
-        return { ...currTask, checked: !currTask.checked };
-      } else {
-        return currTask;
-      }
-    })
-    setTask(updatedTask);
-  }
+      dispatch({
+        type: "task/clear"
+    });
+  };
 
   return (
     <>
@@ -57,14 +72,15 @@ const Todo = () => {
       <div>
         <div className='unorderedList'>
           <ul>
-            {task.map((currTask) => {
+            {tasks.map((task, index) => {
+              // const currTask = normalizedReduxState(t);
               return (
                 <TodoList
-                  key={currTask.id}
-                  data={currTask.content}
-                  checked={currTask.checked}
-                  onHandleDeleteTodo={handleDeleteTodo}
-                  onHandleCheckedTodo={handleCheckedTodo}
+                  key={index}
+                  data={task}
+                  checked={task.includes("✓")}
+                  onHandleDeleteTodo={() => handleDeleteTodo(index)}
+                  onHandleCheckedTodo={() => handleCheckedTodo(index)}
                 />
               );
             })}

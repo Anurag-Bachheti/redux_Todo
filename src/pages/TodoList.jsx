@@ -6,8 +6,8 @@ const TodoList = ({ data, checked, onHandleDeleteTodo, onHandleCheckedTodo }) =>
         <div>
             <li>
                 <span className={checked ? "checkList" : "notCheckList"}>{data}</span>
-                <button className='check-btn' onClick={() => onHandleCheckedTodo(data)}><MdCheck /></button>
-                <button className='delete-btn' onClick={() => onHandleDeleteTodo(data)}><MdDeleteForever /></button>
+                <button className='check-btn' onClick={() => onHandleCheckedTodo()}><MdCheck /></button>
+                <button className='delete-btn' onClick={() => onHandleDeleteTodo()}><MdDeleteForever /></button>
             </li>
         </div>
     )

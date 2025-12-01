@@ -1,11 +1,15 @@
 import { useState } from 'react';
 
 const TodoForm = ({ onAddTodo }) => {
-    const [inputValue, setInputValue] = useState({});
+    const [inputValue, setInputValue] = useState({
+        id: "",
+        content: "",
+        checked: false
+    });
 
     //handle input change
     const handleInputChange = (value) => {
-        setInputValue({ id: value, content: value, checked: false });
+        setInputValue({ id: Date.now(), content: value, checked: false });
     }
 
     // handle form submit
@@ -22,7 +26,7 @@ const TodoForm = ({ onAddTodo }) => {
                     type="text"
                     className='todo-input'
                     autoComplete='off'
-                    value={inputValue.content}
+                    value={inputValue.content || ""}
                     onChange={(event) => handleInputChange(event.target.value)}
                 />
                 <button type="submit" className='to-do-button'>Add Task</button>
