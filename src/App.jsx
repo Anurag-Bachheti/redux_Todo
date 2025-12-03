@@ -3,7 +3,7 @@ import './App.css';
 
 //pages & components
 import Todo from './pages/Todo';
-import store from './store.jsx';
+// import store from './store.jsx';
 
 function App() {
   return (

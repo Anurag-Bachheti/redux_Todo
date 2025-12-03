@@ -1,10 +1,12 @@
-//THIS IS AN ACTION
+// Create Global Store
 import {createStore} from "redux";
 
+//Action Types
 const ADD_TASK = "task/add";
 const DELETE_TASK = "task/delete";
 const CLEAR_TASK = "task/clear";
 
+//Load Saved state from LocalStorage
 const loadState = () => {
     try {
         const saved = localStorage.getItem("tasks")
@@ -14,10 +16,13 @@ const loadState = () => {
     }
 }
 
+//Already saved from previous sessions.
 const initialState = {
     task: loadState(),
 }
 
+// Reducer Function
+//receives old state, receives actions, returns new State.
 const taskReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_TASK:
@@ -45,20 +50,23 @@ const taskReducer = (state = initialState, action) => {
     }
 };
 
+//Create Redux Store(global store with reducer)
 export const store = createStore(taskReducer)
 
+// Save state to Local Storage on every change
 store.subscribe(() => {
     const state = store.getState();
     localStorage.setItem("tasks", JSON.stringify(state.task));
 });
 
-const addTask = (data) => {
-    return {type: ADD_TASK, payload: data}
-}
 
-const deleteTask = (id) => {
-    return {type: DELETE_TASK, payload: id }
-}
+// const addTask = (data) => {
+//     return {type: ADD_TASK, payload: data}
+// }
+
+// const deleteTask = (id) => {
+//     return {type: DELETE_TASK, payload: id }
+// }
 
 
 // store.dispatch(addTask("Buy Fruits"));
